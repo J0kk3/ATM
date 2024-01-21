@@ -2,11 +2,22 @@
 // Purpose: Source file for Account class
 #include "Account.h"
 
+/*
+* Account class
+* Purpose:
+*    To create an account with a number, name, and balance
+*    To print the account details
+*    To transfer money between accounts
+*   @param accountNumber - the account number
+*   @param accountName - the account name
+*   @param balance - the account balance
+*    
+*/
 
 Account::Account(const int accountNumber, const std::string accountName, double balance) : accountNumber(accountNumber), accountName(accountName), balance(balance)
 {}
 
-void Account::printAccounts()
+void Account::printAccounts() const
 {
 	std::cout << "Account Number: " << accountNumber << std::endl;
 	std::cout << "Account Name: " << accountName << std::endl;

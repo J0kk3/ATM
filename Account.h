@@ -11,7 +11,7 @@ private:
 		double balance;
 public:
 	Account(int accountNumber, std::string accountName, double balance);
-	void printAccounts();
+	void printAccounts() const;
 	bool transferMoney(std::shared_ptr<Account> accountFrom, std::shared_ptr<Account> accountTo, double amount);
 };
 
