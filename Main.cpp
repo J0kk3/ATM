@@ -25,29 +25,29 @@ void displayMeny()
       std::cout << "Please choose one alternative\n\n1. See account and balance\n"
                 << "2. Transfer between accounts\n3. Exchange money\n4. Log out\n";
 
-      int option; 
+      char option; // fixa infnite loop.  
       std::cin >> option; 
 
       switch (option){
-         case 1:
+         case '1':
             // seKonto()
             activateLoop = false;
             returnToMeny(); 
             break;
    
-         case 2:
+         case '2':
             // överför()
             activateLoop = false;
             returnToMeny(); 
             break; 
 
-         case 3: 
+         case '3': 
             // växla()
             activateLoop = false;
             returnToMeny(); 
             break;
 
-         case 4: 
+         case '4': 
             // loggaUt()
             activateLoop = false;
             // gå tillbaka till logga in funktion? 
@@ -62,6 +62,7 @@ void displayMeny()
 int main()
 {
    // behöver skapa objekt av user för att hämta username
+   // fixa vanligt välkomnande till banken också. 
    std::cout << "\nWelcome to the bank"; // << currentUser\n\n;
    displayMeny();
 }
