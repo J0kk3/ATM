@@ -1,7 +1,21 @@
 // ATM.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream> 
+#include <iostream>
+#include <conio.h> 
+#include "User.h"
+
+void displayMeny();
+
+void returnToMeny()
+{
+   std::cout << "\nTo go back to the main meny, please press [ENTER].\nTo exit press any other key.";
+   char input;
+   input = _getch();
+   if(int(input) == 13){ // ([ENTER] i int == 13)
+      displayMeny();
+   } // else logOut() ? 
+}
 
 void displayMeny()
 {
@@ -17,22 +31,26 @@ void displayMeny()
       switch (option){
          case 1:
             // seKonto()
-            activateLoop = false; 
+            activateLoop = false;
+            returnToMeny(); 
             break;
    
          case 2:
             // överför()
-            activateLoop = false; 
+            activateLoop = false;
+            returnToMeny(); 
             break; 
 
          case 3: 
             // växla()
-            activateLoop = false; 
+            activateLoop = false;
+            returnToMeny(); 
             break;
 
          case 4: 
             // loggaUt()
-            activateLoop = false; 
+            activateLoop = false;
+            // gå tillbaka till logga in funktion? 
             break;
 
          default:
@@ -43,7 +61,7 @@ void displayMeny()
 
 int main()
 {
-   // string currentUser = getUsername(); 
+   // behöver skapa objekt av user för att hämta username
    std::cout << "\nWelcome to the bank"; // << currentUser\n\n;
    displayMeny();
 }
