@@ -18,4 +18,8 @@ public:
 
 	//Setter with validation
 	bool setPin(std::string newPin);
+	bool setUserID(std::string newUser);
+
+	//Methods
+	void userinfo(int info);
 };

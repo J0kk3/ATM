@@ -13,11 +13,39 @@
 User::User() : username(""), pin("0000") {}
 
 //Parameterized constructor
-User::User(std::string userName, std::string pin) : username(userName), pin(pin)
+User::User(int userId)//, std::string userName, std::string pin) : userid(userId), username(userName), pin(pin)
 {
-	/// Set the pin
+
+		switch (userId)
+		{
+		case 911022:
+			name = "Liv Danielsdottir";
+			pin = "1111";
+			break;
+		case 850212:
+			name = "Joakim Sjöström";
+			pin = "2222";
+			break;
+		case 841130:
+
+			name = "Meduart Juniku";
+			pin = "3333";
+			break;
+		case 020427:
+			name = "Leo Katakalidis";
+			pin = "4444";
+			break;
+		case 760320:
+			name = "Jimmy Wallener";
+			pin = "5555";
+			break;
+		default:
+			break;
+
+		}
 	setPin(pin);
 }
+
 
 //Getters
 std::string User::getUsername() const
@@ -29,11 +57,81 @@ std::string User::getPin() const
 {
 	return pin;
 }
-
-//Setter with validation
-bool User::setPin(std::string newPin)
+void User::userinfo(int info)	//Output
 {
-	// Check if the pin is a numeric string
+
+
+	switch (info)
+	{
+
+	case 1:
+		std::cout << "\n\t\tPlease enter user ID:\n\t\t";
+		break;
+	case 2:
+		system("cls");	//Rensar skärmen
+		std::cout << "\a\n\t\tUser ID must be a 6-digit number.";
+		break;
+	case 3:
+		system("cls");
+		std::cout << "\a\n\t\tUser not found.";
+		break;
+	case 4:
+		system("cls");
+		std::cout << "\n\t\tPlease enter PIN:\n\t\t";
+		break;
+	case 5:
+		system("cls");
+		std::cout << "\a\n\t\tInvalid pin. Pin must be a 4-digit number.\n";
+		break;
+	case 6:
+		system("cls");
+		std::cout << "\n\t\tToo many incorrect attempts";
+		break;
+	case 7:
+		system("cls");
+		std::cout << "\n\t\tWelcome " << username;
+		break;
+	default:
+		break;
+
+	}
+
+
+}
+
+bool User::setUserID(std::string newUser) //Checks for non-digits and number of digits
+{
+
+
+	if (newUser.length() == 6)
+	{
+		bool validUser = true;
+		for (char digit : newUser)
+		{
+			if (!std::isdigit(digit))
+			{
+				validUser = false;
+				// Exit the loop early if a non-digit character
+				break;
+			}
+		}
+		if (validUser)
+		{
+
+			return true;
+		}
+
+
+	}
+
+	userinfo(2);	// Validation failed
+	return false;
+
+
+
+}
+bool User::setPin(std::string newPin)		 //Setter with validation
+{
 	if (newPin.length() == 4)
 	{
 		bool isValid = true;
@@ -47,16 +145,26 @@ bool User::setPin(std::string newPin)
 				break;
 			}
 		}
-
 		if (isValid)
 		{
-			pin = newPin;
-			// Pin set successfully
-			return true;
+			if (newPin == pin)//if(newPin==get_pin())
+			{
+				pin = newPin;
+				// Pin set successfully
+				userinfo(7);
+				return true;
+			}
+			else
+			{
+				userinfo(5);
+				return false;
+			}
+
+
+
 		}
 	}
-
-	// Validation failed
-	std::cout << "Invalid pin. Pin must be a 4-digit number." << std::endl;
+	userinfo(5);	  // Validation failed
 	return false;
 }
+
