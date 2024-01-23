@@ -27,7 +27,7 @@ beginning:
 
 	/****** Använde name eftersom att user initeras i main(), men det finns garanterat bättre sätt att kolla input mot user*****/
 
-	if ("" == one.get_name())	 //Kollar ifall användare finns.
+	if ("" == one.getUsername())	 //Kollar ifall användare finns.
 	{
 		start.userinfo(3);
 		goto beginning;	  //går till start 

@@ -10,33 +10,33 @@
 */
 
 //Default Constructor
-User::User() : username(""), pin("0000") {}
+User::User() : username(""), pin("0000"), userid(000000) {}
 
 //Parameterized constructor
-User::User(int userId)//, std::string userName, std::string pin) : userid(userId), username(userName), pin(pin)
+User::User(int userId) : userid(userId)//std::string userName, std::string pin) : userid(userId), username(userName), pin(pin)
 {
 
 		switch (userId)
 		{
 		case 911022:
-			name = "Liv Danielsdottir";
+			username = "Liv Danielsdottir";
 			pin = "1111";
 			break;
 		case 850212:
-			name = "Joakim Sjöström";
+			username = "Joakim Sjöström";
 			pin = "2222";
 			break;
 		case 841130:
 
-			name = "Meduart Juniku";
+			username = "Meduart Juniku";
 			pin = "3333";
 			break;
 		case 020427:
-			name = "Leo Katakalidis";
+			username = "Leo Katakalidis";
 			pin = "4444";
 			break;
 		case 760320:
-			name = "Jimmy Wallener";
+			username = "Jimmy Wallener";
 			pin = "5555";
 			break;
 		default:
@@ -52,7 +52,6 @@ std::string User::getUsername() const
 {
 	return username;
 }
-
 std::string User::getPin() const
 {
 	return pin;

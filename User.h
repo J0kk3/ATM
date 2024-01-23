@@ -6,11 +6,13 @@ class User
 private:
 	std::string username;
 	std::string pin;
+	int userid;
 
 public:
+
 	//Constructors
 	User();
-	User(std::string username, std::string pin);
+	User(int userId);//std::string username, std::string pin);
 
 	//Getters
 	std::string getUsername() const;
