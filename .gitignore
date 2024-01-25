@@ -1,7 +1,9 @@
 # User entered
 .vs/
 x64/Debug/
-
+/Debug
+.vscode
+.vs
 # Prerequisites
 *.d
 
@@ -34,3 +36,4 @@ x64/Debug/
 *.exe
 *.out
 *.app
+.vscode/launch.json

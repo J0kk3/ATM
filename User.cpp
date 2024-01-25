@@ -20,14 +20,18 @@ User::User(std::string userName, std::string pin) : username(userName), pin(pin)
 }
 
 //Getters
-std::string User::getUsername() const
+std::string User::getUsername()
 {
 	return username;
 }
 
-std::string User::getPin() const
+std::string User::getPin()
 {
 	return pin;
+}
+std::vector<Account> User::getAccounts() const
+{
+	return accounts;
 }
 
 //Setter with validation
@@ -60,3 +64,10 @@ bool User::setPin(std::string newPin)
 	std::cout << "Invalid pin. Pin must be a 4-digit number." << std::endl;
 	return false;
 }
+
+void User::addAccount(Account newAccount)
+{
+	accounts.push_back(newAccount);
+	
+}
+

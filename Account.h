@@ -1,18 +1,19 @@
 // Account.h
 #pragma once
 #include <iostream>
-#include <memory>
+
 
 class Account
 {
 private:
-		std::string accountName;
-		int accountNumber;
-		double balance;
-public:
-	Account(int accountNumber, std::string accountName, double balance);
-	void printAccounts() const;
-	bool transferMoney(std::shared_ptr<Account> accountFrom, std::shared_ptr<Account> accountTo, double amount);
-};
+	int accountNumber;
+	double balance;
+	std::string accountType;
+	std::string currency;
 
-// Path: Account.cpp
+public:
+	Account(int accountNumber, std::string accountType, double balance, std::string currency);
+	void printAccounts() const;
+	bool transferMoney(Account* accountFrom, double amount);
+	std::string getCurrency() const;
+};
