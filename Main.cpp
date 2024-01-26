@@ -12,7 +12,9 @@ void createUsers(std::vector<User>& users);
 void createAccounts(User& user);
 void loginWindow(const std::vector<User>& users);
 bool authenticateUser(const std::string& username, const std::string& pin, const std::vector<User>& users);
-void displayMeny();
+void showAccounts(User& user);
+void displayMeny(User& user);
+void returnToMeny(User& user);
 
 
 
@@ -44,32 +46,33 @@ void createUsers(std::vector<User>& users) {
 }
 
 void createAccounts(User& user) {
-    int accountNumber[5]{ 1234, 2345, 3456, 4567, 5678 };
-    double balance[5]{ 1000, 2000, 3000, 4000, 5000 };
     std::string types[5]{ "L\u00F6nekonto", "Sparkonto", "Resekonto", "Personkonto", "F\u00F6retagskonto" };
     std::string currencies[5]{ "SEK", "USD", "EUR", "GBP", "DKK" };
-    size_t size = sizeof(accountNumber) / sizeof(accountNumber[0]);
 
     // Random number generator
     std::random_device rd;
     std::mt19937 gen(rd());
 
+    std::uniform_int_distribution<int> dist(1, 5);
+    int size = dist(gen);
     // Generate random account details for each account
     for (size_t i = 0; i < size; i++) {
-
+        std::uniform_int_distribution<int> typeDist(0, 4);
+        int typeIndex = typeDist(gen);
+        std::uniform_int_distribution<int> currencyDist(0, 4);
+        int currencyIndex = currencyDist(gen);
+        std::uniform_int_distribution<int> balanceDist(0, 10000);
+        double balance = balanceDist(gen);
+        std::uniform_int_distribution<int> accountNumber(1000, 9999);
+        int accountNo = accountNumber(gen);
+        user.addAccount(Account(accountNo, types[typeIndex], balance, currencies[currencyIndex]));
 
         // Generate random number of types from array to each account
-        std::uniform_int_distribution<int> dist(1, 5);
+       /* std::uniform_int_distribution<int> dist(1, 5);
         int numTypes = dist(gen);
         for (int j = 0; j < numTypes; j++) {
-            std::uniform_int_distribution<int> typeDist(0, 4);
-            int typeIndex = typeDist(gen);
-            std::uniform_int_distribution<int> currencyDist(0, 4);
-            int currencyIndex = currencyDist(gen);
-            std::uniform_int_distribution<int> balanceDist(0, 10000);
-            double balance = balanceDist(gen);
-            user.addAccount(Account(accountNumber[i], types[typeIndex], balance, currencies[currencyIndex]));
-        }
+         
+        }*/
 
 
     }
@@ -80,6 +83,8 @@ bool authenticateUser(const std::string& username, const std::string& pin, const
 {
     for (User user : users) {
         if (user.getUsername() == username && user.getPin() == pin) {
+            std::cout << "\nLogin successful!\n";
+            displayMeny(user);
             return true;
         }
     }
@@ -101,13 +106,12 @@ void loginWindow(const std::vector<User>& users)
         std::cin >> pin;
 
         if (authenticateUser(username, pin, users)) {
-            std::cout << "\nLogin successful!\n";
-            displayMeny();
             return;
         }
         else {
             std::cout << "\nInvalid username or pin code. Please try again.\n";
             maxAttempts--;
+            std::cout << "\nThere are " << maxAttempts << " left.\n";
         }
     }
 
@@ -115,16 +119,24 @@ void loginWindow(const std::vector<User>& users)
 }
 
 
-static void returnToMeny()
+static void returnToMeny(User& user)
 {
     std::cout << "\nTo go back to the main meny, please press [ENTER].\nTo exit press any other key.";
     char input = _getch();
     if (int(input) == 13) { // ([ENTER] i int == 13)
-        displayMeny();
+        displayMeny(user);
     } // else logOut() ? 
 }
 
-void displayMeny()
+void showAccounts(User& user) {
+    std::vector<Account> accounts = user.getAccounts();
+
+    for (auto account : accounts) {
+        account.printAccounts();
+    }
+}
+
+void displayMeny(User& user)
 {
     bool activateLoop = true;
 
@@ -137,21 +149,21 @@ void displayMeny()
 
         switch (option) {
         case '1':
-            // seKonto()
+            showAccounts(user);
             activateLoop = false;
-            returnToMeny();
+            returnToMeny(user);
             break;
 
         case '2':
             // överför()
             activateLoop = false;
-            returnToMeny();
+            returnToMeny(user);
             break;
 
         case '3':
             // växla()
             activateLoop = false;
-            returnToMeny();
+            returnToMeny(user);
             break;
 
         case '4':
