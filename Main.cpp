@@ -12,7 +12,7 @@ void createAccounts(User& user);
 void loginWindow(const std::vector<User>& users);
 bool authenticateUser(const std::string& username, const std::string& pin, const std::vector<User>& users);
 void showAccounts(User& user);
-void displayMeny(User& user);
+void displayMenu(User& user);
 void returnToMenu(User& user);
 
 std::string fromCurrencyCode;
@@ -23,9 +23,7 @@ int main()
     std::vector<User> users;
     std::vector<User>* usersPtr = &users;
 
-
     createUsers(*usersPtr);
-
 
     loginWindow(*usersPtr);
 }
@@ -71,8 +69,6 @@ void createAccounts(User& user) {
         for (int j = 0; j < numTypes; j++) {
 
         }*/
-
-
     }
 }
 
@@ -82,7 +78,7 @@ bool authenticateUser(const std::string& username, const std::string& pin, const
     for (User user : users) {
         if (user.getUsername() == username && user.getPin() == pin) {
             std::cout << "\nLogin successful!\n";
-            displayMeny(user);
+            displayMenu(user);
             return true;
         }
     }
@@ -119,10 +115,10 @@ void loginWindow(const std::vector<User>& users)
 
 static void returnToMenu(User& user)
 {
-    std::cout << "\nTo go back to the main meny, please press [ENTER].\nTo exit press any other key.";
+    std::cout << "\nTo go back to the main menu, please press [ENTER].\nTo exit press any other key.";
     char input = _getch();
     if (int(input) == 13) { // ([ENTER] i int == 13)
-        displayMeny(user);
+        displayMenu(user);
     } // else logOut() ?
 }
 
@@ -134,7 +130,7 @@ void showAccounts(User& user) {
     }
 }
 
-void displayMeny(User& user)
+void displayMenu(User& user)
 {
     bool activateLoop = true;
 
@@ -160,15 +156,20 @@ void displayMeny(User& user)
 
         case '3':
             // växla()
-
+            double convertedAmount;
+            double reversedAmount;
             double amount;
             std::cout << "Enter fromCurrencyCode:";
             std::cin >> fromCurrencyCode;
             std::cout << "Enter toCurrencyCode:";
             std::cin >> toCurrencyCode;
-            std::cout << "Enter amount you want to exchange the shit out of:";
+            std::cout << "Enter amount you want to exchange from " << fromCurrencyCode << " to " << toCurrencyCode << ":";
             std::cin >> amount;
-            Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount);
+            std::cout << "\n";
+            convertedAmount = Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount);
+            std::cout << "Converted amount: " << convertedAmount << " " << toCurrencyCode << "\n";
+            reversedAmount = Currency::reverseConvert(toCurrencyCode, convertedAmount);
+            std::cout << "Reversed amount: " << reversedAmount << " " << fromCurrencyCode << "\n";
             activateLoop = false;
             returnToMenu(user);
             break;
@@ -181,6 +182,7 @@ void displayMeny(User& user)
 
         default:
             std::cout << "\n\nInvalid input, please try again\n";
+            break;
         }
     }
 }

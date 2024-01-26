@@ -8,6 +8,8 @@ private:
 	static std::string currencyCodes[5];
 	std::string currencyCode;
 
+	double newAmount;
+
 	// Constants for exchange rates relative to SEK
 	// constexpr implies that these values are constant expressions known at compile time
 	static constexpr double SEK_RATE = 1.0;
@@ -25,7 +27,7 @@ public:
 
 	// Method to convert amount from this currency to another
 	static double convertAmount(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount);
-	static double reverseConvert(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount);
+	static double reverseConvert(const std::string& toCurrencyCode, double amount);
 
 	// Method to get the exchange rate for a given currency code
 	// Throws an exception if the currency code is invalid or not found

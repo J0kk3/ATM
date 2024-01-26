@@ -1,5 +1,6 @@
 #include "Currency.h"
 #include <stdexcept>
+#include <random>
 
 /*
 * @brief Currency class
@@ -21,29 +22,33 @@ std::string Currency::getCurrencyCode() const
 {
 	return currencyCode;
 }
-
 // Method to convert amount from this currency to another
 double Currency::convertAmount(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount)
 {
 	double fromRate = getRate(fromCurrencyCode);
 	double toRate = getRate(toCurrencyCode);
-	return (amount * fromRate) / toRate;
+	double newAmount = (amount * fromRate) / toRate;
+	return newAmount;
 }
 
-double Currency::reverseConvert(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount)
+double Currency::reverseConvert(const std::string& toCurrencyCode, double newAmount)
 {
-	double fromRate = 1.0;
 	double toRate = getRate(toCurrencyCode);
-	return (amount * fromRate) * toRate;
+	double reversedAmount = newAmount * toRate;
+	return reversedAmount;
 }
 
 // Method to get the exchange rate for a given currency code
 double Currency::getRate(const std::string& currencyCode)
 {
-	if (currencyCode == "SEK") return SEK_RATE;
-	if (currencyCode == "DKK") return DKK_RATE;
-	if (currencyCode == "EUR") return EUR_RATE;
-	if (currencyCode == "GBP") return GBP_RATE;
-	if (currencyCode == "USD") return USD_RATE;
+	std::string upperCaseCode = currencyCode;
+	// Convert currency code to uppercase
+	std::transform(upperCaseCode.begin(), upperCaseCode.end(), upperCaseCode.begin(), ::toupper);
+
+	if (upperCaseCode == "SEK") return SEK_RATE;
+	if (upperCaseCode == "DKK") return DKK_RATE;
+	if (upperCaseCode == "EUR") return EUR_RATE;
+	if (upperCaseCode == "GBP") return GBP_RATE;
+	if (upperCaseCode == "USD") return USD_RATE;
 	throw std::runtime_error("Invalid currency code");
 }
