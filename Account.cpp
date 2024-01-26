@@ -9,34 +9,43 @@
 *    To print the account details
 *    To transfer money between accounts
 *   @param accountNumber - the account number
-*   @param accountName - the account name
+*   @param accountType - the account name
 *   @param balance - the account balance
-*    
+*
 */
 
-Account::Account(const int accountNumber, const std::string accountName, double balance) : accountNumber(accountNumber), accountName(accountName), balance(balance)
+Account::Account(int accountNumber, std::string accountType, double balance, std::string currency) : accountNumber(accountNumber), accountType(accountType), balance(balance), currency(currency)
 {}
 
 void Account::printAccounts() const
 {
-	std::cout << "Account Number: " << accountNumber << std::endl;
-	std::cout << "Account Name: " << accountName << std::endl;
-	std::cout << "Account Balance: " << balance << std::endl;
+	std::cout << "Account Number: " << accountNumber << "\n";
+	std::cout << "Account Type: " << accountType << "\n";
+	std::cout << "Account Balance: " << balance << "\n";
+	std::cout << "Account Currency: " << currency << "\n";
+	std::cout << std::endl;
 }
 
 // using smart pointers to transfer money between accounts for easy memory management
-bool Account::transferMoney(std::shared_ptr<Account> accountFrom, std::shared_ptr<Account> accountTo, double amount)
+bool Account::transferMoney(Account* accountFrom, double amount)
 {
 	// Check if the accountFrom has sufficient balance to transfer
 	if (accountFrom && accountFrom->balance >= amount)
 	{
 		accountFrom->balance -= amount;
-		accountTo->balance += amount;
+		balance += amount;
 		return true;
 	}
 	else
 	{
-		std::cout << "Insufficient balance to transfer" << std::endl;
+		std::cout << "Insufficient balance to transfer\n";
 		return false;
 	}
+}
+
+
+
+std::string Account::getCurrency() const
+{
+	return currency;
 }
