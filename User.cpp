@@ -5,7 +5,7 @@
 * @brief User class
 * @param username - the username of the user
 * @param pin - the pin of the user, must be 4 digits
-* 
+*
 * This class is used to create a user object. It contains a username and a pin.
 */
 
@@ -28,6 +28,10 @@ std::string User::getUsername() const
 std::string User::getPin() const
 {
 	return pin;
+}
+std::vector<Account> User::getAccounts() const
+{
+	return accounts;
 }
 
 //Setter with validation
@@ -59,4 +63,10 @@ bool User::setPin(std::string newPin)
 	// Validation failed
 	std::cout << "Invalid pin. Pin must be a 4-digit number." << std::endl;
 	return false;
+}
+
+void User::addAccount(Account newAccount)
+{
+	accounts.push_back(newAccount);
+
 }
