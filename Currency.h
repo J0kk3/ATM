@@ -25,6 +25,7 @@ public:
 
 	// Method to convert amount from this currency to another
 	static double convertAmount(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount);
+	static double reverseConvert(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount);
 
 	// Method to get the exchange rate for a given currency code
 	// Throws an exception if the currency code is invalid or not found

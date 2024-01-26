@@ -30,6 +30,13 @@ double Currency::convertAmount(const std::string& fromCurrencyCode, const std::s
 	return (amount * fromRate) / toRate;
 }
 
+double Currency::reverseConvert(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount)
+{
+	double fromRate = 1.0;
+	double toRate = getRate(toCurrencyCode);
+	return (amount * fromRate) * toRate;
+}
+
 // Method to get the exchange rate for a given currency code
 double Currency::getRate(const std::string& currencyCode)
 {

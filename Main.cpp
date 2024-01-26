@@ -5,8 +5,7 @@
 #include <vector>
 #include <random>
 #include "User.h"
-
-
+#include "Currency.h"
 
 void createUsers(std::vector<User>& users);
 void createAccounts(User& user);
@@ -14,11 +13,10 @@ void loginWindow(const std::vector<User>& users);
 bool authenticateUser(const std::string& username, const std::string& pin, const std::vector<User>& users);
 void showAccounts(User& user);
 void displayMeny(User& user);
-void returnToMeny(User& user);
+void returnToMenu(User& user);
 
-
-
-
+std::string fromCurrencyCode;
+std::string toCurrencyCode;
 
 int main()
 {
@@ -71,7 +69,7 @@ void createAccounts(User& user) {
        /* std::uniform_int_distribution<int> dist(1, 5);
         int numTypes = dist(gen);
         for (int j = 0; j < numTypes; j++) {
-         
+
         }*/
 
 
@@ -119,13 +117,13 @@ void loginWindow(const std::vector<User>& users)
 }
 
 
-static void returnToMeny(User& user)
+static void returnToMenu(User& user)
 {
     std::cout << "\nTo go back to the main meny, please press [ENTER].\nTo exit press any other key.";
     char input = _getch();
     if (int(input) == 13) { // ([ENTER] i int == 13)
         displayMeny(user);
-    } // else logOut() ? 
+    } // else logOut() ?
 }
 
 void showAccounts(User& user) {
@@ -144,32 +142,41 @@ void displayMeny(User& user)
         std::cout << "Please choose one alternative\n\n1. See account and balance\n"
             << "2. Transfer between accounts\n3. Exchange money\n4. Log out\n";
 
-        char option; // fixa infnite loop.  
+        char option; // fixa infnite loop.
         std::cin >> option;
 
         switch (option) {
         case '1':
             showAccounts(user);
             activateLoop = false;
-            returnToMeny(user);
+            returnToMenu(user);
             break;
 
         case '2':
             // överför()
             activateLoop = false;
-            returnToMeny(user);
+            returnToMenu(user);
             break;
 
         case '3':
             // växla()
+
+            double amount;
+            std::cout << "Enter fromCurrencyCode:";
+            std::cin >> fromCurrencyCode;
+            std::cout << "Enter toCurrencyCode:";
+            std::cin >> toCurrencyCode;
+            std::cout << "Enter amount you want to exchange the shit out of:";
+            std::cin >> amount;
+            Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount);
             activateLoop = false;
-            returnToMeny(user);
+            returnToMenu(user);
             break;
 
         case '4':
             // loggaUt()
             activateLoop = false;
-            // gå tillbaka till logga in funktion? 
+            // gå tillbaka till logga in funktion?
             break;
 
         default:
