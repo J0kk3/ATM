@@ -9,9 +9,6 @@
 
 void runProgram();
 
-std::string fromCurrencyCode;
-std::string toCurrencyCode;
-
 int main()
 {   
     runProgram();
@@ -33,13 +30,11 @@ void createAccounts(User& user)
     // Generate random account details for each account
     for (size_t i = 0; i < size; i++) 
     {
-
         std::uniform_int_distribution<int> currencyDist(0, 4);
         int currencyIndex = currencyDist(gen);
         std::uniform_int_distribution<int> balanceDist(0, 10000);
         double balance = balanceDist(gen);
-        user.addAccount(Account(types[i], balance, currencies[currencyIndex]));
-       
+        user.addAccount(Account(types[i], balance, currencies[currencyIndex]));       
     }
 }
 

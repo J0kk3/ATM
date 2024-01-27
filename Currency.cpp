@@ -1,6 +1,8 @@
 #include "Currency.h"
 #include <stdexcept>
 #include <random>
+#include <cctype>
+#include <algorithm>
 
 /*
 * @brief Currency class
@@ -11,17 +13,18 @@
 * using fixed rates.
 */
 
+//Parameterized constructor
+Currency::Currency(const std::string& currencyCode) : currencyCode(currencyCode) {};
+
 // Initialize the static array of currency codes
 std::string Currency::currencyCodes[5] = { "SEK", "DKK", "EUR", "GBP", "USD" };
 
-// Default Constructor
-Currency::Currency(std::string currencyCode) : currencyCode(std::move(currencyCode)) {}
-
-//Parameterized constructor
+// Getter for the currency code
 std::string Currency::getCurrencyCode() const
 {
 	return currencyCode;
 }
+
 // Method to convert amount from this currency to another
 double Currency::convertAmount(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount)
 {
@@ -29,13 +32,6 @@ double Currency::convertAmount(const std::string& fromCurrencyCode, const std::s
 	double toRate = getRate(toCurrencyCode);
 	double newAmount = (amount * fromRate) / toRate;
 	return newAmount;
-}
-
-double Currency::reverseConvert(const std::string& toCurrencyCode, double newAmount)
-{
-	double toRate = getRate(toCurrencyCode);
-	double reversedAmount = newAmount * toRate;
-	return reversedAmount;
 }
 
 // Method to get the exchange rate for a given currency code
