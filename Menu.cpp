@@ -3,10 +3,12 @@
 #include <vector>
 #include <string>
 #include <conio.h>
-
-
+#include "Currency.h"
 
 Menu::Menu(std::vector<User>& users) : users(users) {};
+
+std::string fromCurrencyCode;
+std::string toCurrencyCode;
 
 bool Menu::authenticateUser(const std::string& username, const std::string& pin, const std::vector<User>& users) 
 {
@@ -48,7 +50,6 @@ void Menu::login()
     bool isAuthenticated = false;
     int maxAttempts = 3;
 
-
     std::cout << "\n======== Welcome to the Bank ATM =========\n\n";
 
     while (maxAttempts > 0) 
@@ -82,7 +83,6 @@ void Menu::returnToMain(User& user)
 
 void Menu::mainMenu(User& user) 
 {
-
     bool isRunning = true;
 
     std::cout << "\nWelcome " << user.getUsername() << "!\n\n";
@@ -92,7 +92,6 @@ void Menu::mainMenu(User& user)
         std::cout << "2. Transfer between accounts\n";
         std::cout << "3. Exchange money\n";
         std::cout << "4. Log out\n";
-
 
         int choice;
         std::cin >> choice;
@@ -109,7 +108,25 @@ void Menu::mainMenu(User& user)
         
                 break;
             case 3:
-        
+                clearScreen();
+                double amount;
+                double convertedAmount;
+                double reverseAmount;
+
+                std::cout << "Enter fromCurrencyCode:";
+                std::cin >> fromCurrencyCode;
+                std::cout << "Enter toCurrencyCode:";
+                std::cin >> toCurrencyCode;
+                std::cout << "Enter amount you want to exchange from " << fromCurrencyCode << " to " << toCurrencyCode << ":";
+                std::cin >> amount;
+                std::cout << "\n";
+
+                convertedAmount = Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount);
+                reverseAmount = Currency::convertAmount(toCurrencyCode, fromCurrencyCode, convertedAmount);
+                std::cout << "Converted amount: " << convertedAmount << " " << toCurrencyCode << "\n";
+                std::cout << "Reverse converted amount: " << reverseAmount << " " << fromCurrencyCode << "\n";
+
+                returnToMain(user);
                 break;
             case 4:
                 std::cout << "Logging out...\n";
@@ -125,12 +142,10 @@ void Menu::mainMenu(User& user)
     }
 }
 
-
 std::vector<User> Menu::getUsers()
 {
 	return users;
 }
-
 
 void Menu::clearScreen()
 {

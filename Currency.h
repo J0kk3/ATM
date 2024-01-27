@@ -17,8 +17,9 @@ private:
 	static constexpr double USD_RATE = 10.46;
 
 public:
-	// Constructor
-	Currency(std::string currencyCode);
+	// Explicit constructor to set the currency code for a Currency instance
+	//Explicit means that the constructor can only be called explicitly
+	explicit Currency(const std::string& currencyCode);
 
 	// Getters
 	std::string getCurrencyCode() const;

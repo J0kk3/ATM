@@ -7,21 +7,13 @@
 #include "User.h"
 #include "Menu.h"
 
-
-
 void runProgram();
-
-
 
 int main()
 {   
     runProgram();
     return 0;
 }
-
-
-
-
 
 void createAccounts(User& user) 
 {
@@ -38,13 +30,11 @@ void createAccounts(User& user)
     // Generate random account details for each account
     for (size_t i = 0; i < size; i++) 
     {
-
         std::uniform_int_distribution<int> currencyDist(0, 4);
         int currencyIndex = currencyDist(gen);
         std::uniform_int_distribution<int> balanceDist(0, 10000);
         double balance = balanceDist(gen);
-        user.addAccount(Account(types[i], balance, currencies[currencyIndex]));
-       
+        user.addAccount(Account(types[i], balance, currencies[currencyIndex]));       
     }
 }
 
@@ -74,7 +64,4 @@ static void runProgram()
     {
         std::cout << e.what() << " Oops, something went wrong. Please try again.\n";
     }
-
-    
-   
 }
