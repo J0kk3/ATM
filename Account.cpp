@@ -14,27 +14,28 @@
 *
 */
 
-Account::Account(int accountNumber, std::string accountType, double balance, std::string currency) : accountNumber(accountNumber), accountType(accountType), balance(balance), currency(currency)
+Account::Account(std::string accountType, double balance, std::string currency) : accountType(accountType), balance(balance), currency(currency)
 {}
 
 void Account::printAccounts() const
 {
-	std::cout << "Account Number: " << accountNumber << "\n";
-	std::cout << "Account Type: " << accountType << "\n";
-	std::cout << "Account Balance: " << balance << "\n";
-	std::cout << "Account Currency: " << currency << "\n";
-	std::cout << std::endl;
+	std::cout << "\t" << accountType << "\t\t" << balance << "\t\t" << currency << "\n";
 }
 
 // using smart pointers to transfer money between accounts for easy memory management
 bool Account::transferMoney(Account* accountFrom, double amount)
 {
 	// Check if the accountFrom has sufficient balance to transfer
-	if (accountFrom && accountFrom->balance >= amount)
+	if ((accountFrom && accountFrom->getBalance() >= amount) && (accountFrom->getCurrency() == currency))
 	{
-		accountFrom->balance -= amount;
+		accountFrom->setBalance(accountFrom->getBalance() - amount);
 		balance += amount;
 		return true;
+	}
+    else if (accountFrom && accountFrom->getCurrency() != currency)
+	{
+		std::cout << "Cannot transfer between accounts with different currencies\n";
+		return false;
 	}
 	else
 	{
@@ -43,9 +44,22 @@ bool Account::transferMoney(Account* accountFrom, double amount)
 	}
 }
 
+// Getters
 
+double Account::getBalance() const
+{
+	return balance;
+}
 
 std::string Account::getCurrency() const
 {
 	return currency;
+}
+
+// Setters
+
+double Account::setBalance(double newBalance)
+{
+	balance = newBalance;
+	return balance;
 }
