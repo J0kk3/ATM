@@ -18,7 +18,7 @@ int main()
 void createAccounts(User& user) 
 {
     std::string types[5]{ "Salary Account", "Savings Account", "Travel Account", "Check Account", "Retire Account" };
-    std::string currencies[5]{ "SEK", "USD", "EUR", "GBP", "DKK" };
+    Currency currencies[5] = { Currency("SEK"), Currency("DKK"), Currency("EUR"), Currency("GBP"), Currency("USD") };
 
     // Random number generator
     std::random_device rd;
