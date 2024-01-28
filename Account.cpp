@@ -2,56 +2,52 @@
 // Purpose: Source file for Account class
 #include "Account.h"
 
-/*
-* Account class
-* Purpose:
-*    To create an account with a number, name, and balance
-*    To print the account details
-*    To transfer money between accounts
-*   @param accountNumber - the account number
-*   @param accountType - the account name
-*   @param balance - the account balance
-*
-*/
 
+/**
+ * @brief Constructs an Account object with the specified account type, balance, and currency.
+ * @param accountType The account type.
+ * @param balance The account balance.
+ * @param currency The currency of the account.
+ */
 Account::Account(std::string accountType, double balance, const Currency& currency) : 
 	accountType(accountType), balance(balance), currency(currency) {}
 
-void Account::printAccounts() const
+
+/**
+ * @brief Prints the account details.
+ */
+void Account::printAccounts()
 {
 	std::cout << "\t" << accountType << "\t\t" << balance << "\t\t" << currency.getCurrencyCode() << "\n";
 }
 
-// using smart pointers to transfer money between accounts for easy memory management
-bool Account::transferMoney(Account* accountFrom, double amount)
-{
-	// Check if the accountFrom has sufficient balance to transfer
-	if ((accountFrom && accountFrom->getBalance() >= amount) && 
-		(accountFrom->getCurrencyCode() == currency.getCurrencyCode()))
-	{
-		accountFrom->setBalance(accountFrom->getBalance() - amount);
-		balance += amount;
-		return true;
-	}
-    else if (accountFrom && accountFrom->getCurrencyCode() != currency.getCurrencyCode())
-	{
-		std::cout << "Cannot transfer between accounts with different currencies\n";
-		return false;
-	}
-	else
-	{
-		std::cout << "Insufficient balance to transfer\n";
-		return false;
-	}
-}
+
+
 
 // Getters
 
+/**
+ * @brief Gets the balance of the account.
+ * @return The balance of the account.
+ */
 double Account::getBalance() const
 {
 	return balance;
 }
 
+/**
+ * @brief Gets the account type of the account.
+ * @return The account type of the account.
+ */
+std::string Account::getAccountName() const
+{
+	return accountType;
+}
+
+/**
+ * @brief Gets the currency code of the account.
+ * @return The currency code of the account.
+ */
 std::string Account::getCurrencyCode() const
 {
 	return currency.getCurrencyCode();
@@ -59,6 +55,11 @@ std::string Account::getCurrencyCode() const
 
 // Setters
 
+/**
+ * @brief Sets the balance of the account.
+ * @param newBalance The new balance of the account.
+ * @return The updated balance of the account.
+ */
 double Account::setBalance(double newBalance)
 {
 	balance = newBalance;

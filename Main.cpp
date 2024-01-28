@@ -1,5 +1,17 @@
-// ATM.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
+/*
+* File: Main.cpp
+* Authors: Joakim Sjöström, Liv Danielsdottir, Leo Katakalidis, Jimmy Wallener
+* Date: 2024-01-29
+* Description: Main file for the ATM program.
+* ATM is a program that simulates an ATM machine.
+* The program allows the user to log in, view their accounts, transfer money between accounts, exchange currency, and log out.
+* User.h and User.cpp contains the User class which represents a user.
+* Account.h and Account.cpp contains the Account class which represents an account.
+* Currency.h and Currency.cpp contains the Currency class which represents a currency.
+* Menu.h and Menu.cpp contains the Menu class which is used to display the menu and handle user input.
+*/
+
 #include <iostream>
 #include <conio.h>
 #include <vector>
@@ -15,6 +27,11 @@ int main()
     return 0;
 }
 
+/**
+ * Generates random account details for a user.
+ * 
+ * @param user The user for whom the accounts will be created.
+ */
 void createAccounts(User& user) 
 {
     std::string types[5]{ "Salary Account", "Savings Account", "Travel Account", "Check Account", "Retire Account" };
@@ -27,18 +44,34 @@ void createAccounts(User& user)
     std::uniform_int_distribution<int> dist(1, 5);
     int size = dist(gen);
 
-    // Generate random account details for each account
-    for (size_t i = 0; i < size; i++) 
+    try
     {
-        std::uniform_int_distribution<int> currencyDist(0, 4);
-        int currencyIndex = currencyDist(gen);
-        std::uniform_int_distribution<int> balanceDist(0, 10000);
-        double balance = balanceDist(gen);
-        user.addAccount(Account(types[i], balance, currencies[currencyIndex]));       
+        // Generate random account details for each account
+        for (size_t i = 0; i < size; i++)
+        {
+            std::uniform_int_distribution<int> currencyDist(0, 4);
+            int currencyIndex = currencyDist(gen);
+            std::uniform_int_distribution<int> balanceDist(0, 10000);
+            double balance = balanceDist(gen);
+            user.addAccount(Account(types[i], balance, currencies[currencyIndex]));
+        }
     }
+    catch (const std::exception& e)
+    {
+		std::cout << e.what() << " Oops, something went wrong when creating accounts.\n";
+
+    }
+
+  
 }
 
-// createUsers() creates 5 users with 5 accounts each
+
+/**
+ * Runs the ATM program.
+ * 
+ * This function initializes the users, creates random account details for each user,
+ * and starts the login process by displaying the menu.
+ */
 static void runProgram()
 {
     std::vector<User> users;
@@ -62,6 +95,6 @@ static void runProgram()
     }
     catch (const std::exception& e)
     {
-        std::cout << e.what() << " Oops, something went wrong. Please try again.\n";
+        std::cout << e.what() << " Oops, something went wrong when creating users.\n";
     }
 }

@@ -14,10 +14,7 @@ User::User() : username(""), pin("0000") {}
 
 //Parameterized constructor
 User::User(std::string userName, std::string pin) : username(userName), pin(pin)
-{
-	/// Set the pin
-	setPin(pin);
-}
+{}
 
 //Getters
 std::string User::getUsername() const
@@ -29,11 +26,13 @@ std::string User::getPin() const
 {
 	return pin;
 }
-std::vector<Account> User::getAccounts() const
+std::vector<Account>& User::getAccounts()
 {
 	return accounts;
 }
 
+// Unused setter
+/*
 //Setter with validation
 bool User::setPin(std::string newPin)
 {
@@ -64,7 +63,7 @@ bool User::setPin(std::string newPin)
 	std::cout << "Invalid pin. Pin must be a 4-digit number." << std::endl;
 	return false;
 }
-
+*/
 void User::addAccount(Account newAccount)
 {
 	accounts.push_back(newAccount);
