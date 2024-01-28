@@ -23,6 +23,7 @@ public:
 
 	// Getters
 	std::string getCurrencyCode() const;
+	static std::string getCurrencyCodes();
 
 	// Method to convert amount from this currency to another
 	static double convertAmount(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount);

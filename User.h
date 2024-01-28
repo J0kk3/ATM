@@ -22,6 +22,6 @@ public:
 	std::vector<Account> getAccounts() const;
 
 	//Setter with validation
-	bool setPin(std::string newPin);
+	// bool setPin(std::string newPin);
 	void addAccount(Account newAccount);
 };

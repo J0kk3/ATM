@@ -15,6 +15,7 @@ public:
 	void returnToMain(User& user);
 	void clearScreen();
 	std::vector<User> getUsers();
+	void exchangeCurrency(User& user);
 };
 
 

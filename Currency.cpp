@@ -25,6 +25,16 @@ std::string Currency::getCurrencyCode() const
 	return currencyCode;
 }
 
+std::string Currency::getCurrencyCodes()
+{
+	std::string codes = "";
+	for (int i = 0; i < 5; i++)
+	{
+		codes += currencyCodes[i] + " ";
+	}
+	return codes;
+}
+
 // Method to convert amount from this currency to another
 double Currency::convertAmount(const std::string& fromCurrencyCode, const std::string& toCurrencyCode, double amount)
 {

@@ -7,14 +7,22 @@
 
 Menu::Menu(std::vector<User>& users) : users(users) {};
 
-std::string fromCurrencyCode;
-std::string toCurrencyCode;
 
+
+/**
+ * Authenticates a user by comparing the provided username and pin with the users in the system.
+ * If the authentication is successful, it clears the screen, displays a login successful message,
+ * and navigates to the main menu for the authenticated user.
+ * 
+ * @param username The username to authenticate.
+ * @param pin The pin code to authenticate.
+ * @param users The vector of users in the system.
+ * @return True if the authentication is successful, False otherwise.
+ */
 bool Menu::authenticateUser(const std::string& username, const std::string& pin, const std::vector<User>& users) 
 {
     for (User user : users) 
     {
-        
         if (user.getUsername() == username && user.getPin() == pin) 
         {
             clearScreen();
@@ -26,6 +34,12 @@ bool Menu::authenticateUser(const std::string& username, const std::string& pin,
     return false;
 }
 
+
+/**
+ * Displays the accounts and their details for a given user.
+ * 
+ * @param user The user whose accounts to display.
+ */
 void Menu::showAccounts(User& user) 
 {
     std::vector<Account> accounts = user.getAccounts();
@@ -42,6 +56,14 @@ void Menu::showAccounts(User& user)
     }
 }
 
+
+/**
+ * Logs in a user by prompting for their username and pin code.
+ * If the authentication is successful, it clears the screen, displays a login successful message,
+ * and navigates to the main menu for the authenticated user.
+ * If the authentication fails, it displays an error message and allows the user to try again.
+ * If the maximum number of login attempts is reached, it terminates the program.
+ */
 void Menu::login() 
 {
     std::string username;
@@ -71,6 +93,12 @@ void Menu::login()
     std::cout << "Too many failed login attempts. Program will terminate.\n";
 }
 
+
+/**
+ * Returns the user to the main menu if they press [ENTER], otherwise logs them out.
+ * 
+ * @param user The authenticated user.
+ */
 void Menu::returnToMain(User& user)
 {
     std::cout << "\n\nTo go back to the main menu, please press [ENTER].\nTo exit press any other key.";
@@ -81,13 +109,51 @@ void Menu::returnToMain(User& user)
     } // else logOut() ? 
 }
 
+
+
+/**
+ * Exchanges currency between two given currency codes.
+ * 
+ * @param user The user performing the currency exchange.
+ */
+void Menu::exchangeCurrency(User& user)
+{
+    double amount;
+    double convertedAmount;
+    double reverseAmount;
+    std::string fromCurrencyCode;
+    std::string toCurrencyCode;
+
+    std::cout << "Available currencies: " << Currency::getCurrencyCodes() << "\n\n";
+    std::cout << "Please enter the currency codes you want to exchange between. use space to separate them.\n";
+    std::cin >> fromCurrencyCode >> toCurrencyCode;
+    std::cout << "Enter amount you want to exchange from " << fromCurrencyCode << " to " << toCurrencyCode << ":";
+    std::cin >> amount;
+    std::cout << "\n";
+
+    convertedAmount = Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount);
+    reverseAmount = Currency::convertAmount(toCurrencyCode, fromCurrencyCode, convertedAmount);
+    std::cout << "Converted amount: " << convertedAmount << " " << toCurrencyCode << "\n";
+    std::cout << "Reverse converted amount: " << reverseAmount << " " << fromCurrencyCode << "\n";
+}
+
+
+
+/**
+ * Displays the main menu for the authenticated user.
+ * 
+ * @param user The authenticated user.
+ */
 void Menu::mainMenu(User& user) 
 {
     bool isRunning = true;
-
+   
+    // Display welcome message
     std::cout << "\nWelcome " << user.getUsername() << "!\n\n";
+    
     while (isRunning) 
     {
+        // Display menu options
         std::cout << "1. See account and balance\n";
         std::cout << "2. Transfer between accounts\n";
         std::cout << "3. Exchange money\n";
@@ -109,23 +175,8 @@ void Menu::mainMenu(User& user)
                 break;
             case 3:
                 clearScreen();
-                double amount;
-                double convertedAmount;
-                double reverseAmount;
-
-                std::cout << "Enter fromCurrencyCode:";
-                std::cin >> fromCurrencyCode;
-                std::cout << "Enter toCurrencyCode:";
-                std::cin >> toCurrencyCode;
-                std::cout << "Enter amount you want to exchange from " << fromCurrencyCode << " to " << toCurrencyCode << ":";
-                std::cin >> amount;
-                std::cout << "\n";
-
-                convertedAmount = Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount);
-                reverseAmount = Currency::convertAmount(toCurrencyCode, fromCurrencyCode, convertedAmount);
-                std::cout << "Converted amount: " << convertedAmount << " " << toCurrencyCode << "\n";
-                std::cout << "Reverse converted amount: " << reverseAmount << " " << fromCurrencyCode << "\n";
-
+                exchangeCurrency(user);
+                isRunning = false;
                 returnToMain(user);
                 break;
             case 4:
@@ -142,11 +193,25 @@ void Menu::mainMenu(User& user)
     }
 }
 
+
+/**
+ * Retrieves the vector of users in the system.
+ * 
+ * @return The vector of users.
+ */
 std::vector<User> Menu::getUsers()
 {
-	return users;
+    return users;
 }
 
+
+/**
+ * Clears the screen based on the operating system.
+ * 
+ * On Windows, it uses the "cls" command to clear the screen.
+ * On Linux and macOS, it uses the "clear" command to clear the screen.
+ * If the operating system is not recognized, it prints 100 newline characters to simulate clearing the screen.
+ */
 void Menu::clearScreen()
 {
 #ifdef _WIN32
