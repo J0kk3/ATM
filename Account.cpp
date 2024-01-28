@@ -22,43 +22,7 @@ void Account::printAccounts()
 }
 
 
-/**
- * @brief Transfers money from one account to another.
- * @param accountFrom The account to transfer money from.
- * @param amount The amount of money to transfer.
- * @return True if the transfer was successful, false otherwise.
- */
-bool Account::transferMoney(Account& accountFrom, double amount)
-{
 
-	try
-	{
-		// Check if the accountFrom has sufficient balance and if the accountFrom and accountTo have the same currency before transferring
-		if ((accountFrom.getBalance() >= amount) &&
-			(accountFrom.getCurrencyCode() == currency.getCurrencyCode()))
-		{
-			accountFrom.setBalance(accountFrom.getBalance() - amount);
-			balance += amount;
-			return true;
-		}
-		else if (accountFrom.getCurrencyCode() != currency.getCurrencyCode())
-		{
-			std::cout << "Cannot transfer between accounts with different currencies\n";
-			return false;
-		}
-		else
-		{
-			std::cout << "Insufficient balance to transfer\n";
-			return false;
-		}
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << e.what() << "Unable to transfer money\n";
-	}
-
-	return false;
-}
 
 // Getters
 

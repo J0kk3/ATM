@@ -14,7 +14,6 @@ public:
 	Account(std::string accountType, double balance, const Currency& currency);
 
 	void printAccounts();
-	bool transferMoney(Account& accountFrom, double amount);
 	std::string getCurrencyCode() const;
 	double getBalance() const;
 	std::string getAccountName() const;

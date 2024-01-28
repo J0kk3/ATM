@@ -42,7 +42,7 @@ bool Menu::authenticateUser(const std::string& username, const std::string& pin,
  */
 void Menu::showAccounts(User& user) 
 {
-    std::vector<Account> accounts = user.getAccounts();
+    std::vector<Account>& accounts = user.getAccounts();
 
     std::cout << "\n\t==================== Your accounts =====================\n\n";
     std::cout << "\tAccount type\t\tBalance\t\tCurrency\n\n";
@@ -122,16 +122,16 @@ void Menu::returnToMain(User& user)
  */
 void Menu::updateAccountBalance(User& user, int fromAccount, int toAccount, double amount, double convertedAmount)
 {
-    std::vector<Account> accounts = user.getAccounts();
+    std::vector<Account>& accounts = user.getAccounts();
     accounts[fromAccount].setBalance(accounts[fromAccount].getBalance() - amount);
     accounts[toAccount].setBalance(accounts[toAccount].getBalance() + convertedAmount);
 }
 
 
 /**
- * Exchanges currency between two given currency codes.
- *
- * @param user The user performing the currency exchange.
+ * Exchanges money from one account to another.
+ * 
+ * @param user The user performing the exchange.
  */
 void Menu::exchangeCurrency(User& user)
 {
@@ -153,15 +153,33 @@ void Menu::exchangeCurrency(User& user)
     fromCurrencyCode = user.getAccounts()[fromAccount - 1].getCurrencyCode();
     std::cout << "How much do you want to exchange? ";
     std::cin >> amount;
+
+    if (amount <= 0)
+    {
+		std::cout << "You cannot exchange 0 or negative amount.\n";
+		std::cout << "Please try again.\n";
+        std::cout << "You have " << user.getAccounts()[fromAccount - 1].getBalance() << " " << fromCurrencyCode << " in your account.\n";
+        std::cout << "How much do you want to exchange? ";
+        std::cin >> amount;
+	}
+    
+    if (user.getAccounts()[fromAccount - 1].getBalance() < amount)
+    {
+        std::cout << "You don't have enough balance to exchange.\n";
+        returnToMain(user);
+    }
+
     std::cout << "Available currencies: " << Currency::getCurrencyCodes() << "\n\n";
     std::cout << "To which currency do you want to exchange? ";
     std::cin >> toCurrencyCode;
 
-    std::vector<Account> accounts = user.getAccounts();
+    std::vector<Account>& accounts = user.getAccounts();
 
     for (size_t i = 0; i < accounts.size(); i++)
     {
         Account& account = accounts[i];
+
+
         if (account.getBalance() >= amount && account.getCurrencyCode() == toCurrencyCode)
         {
             std::cout << "You have account(s) with the currency code " << toCurrencyCode << ".\n";
@@ -174,7 +192,7 @@ void Menu::exchangeCurrency(User& user)
             std::cin >> toAccount;
 
             std::cout << "You want to exchange " << amount << " " << fromCurrencyCode << " to " << toCurrencyCode << "?\n";
-            std::cout << "Enter [Y] to confirm or [N] to cancel: ";
+            std::cout << "Enter [Y] to confirm or [N] to cancel: \n";
 
             char input = _getch();
 
@@ -182,7 +200,7 @@ void Menu::exchangeCurrency(User& user)
             {
                 convertedAmount = round(Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount) * 100) / 100;
                 std::cout << "\nConverted amount: " << convertedAmount << " " << toCurrencyCode << "\n";
-                std::cout << "Do you want to exchange? [Y] or [N]: ";
+                std::cout << "Do you want to exchange? [Y] or [N]: \n";
                 char input = _getch();
 
                 if (int(input) == 89 || int(input) == 121)
@@ -192,7 +210,7 @@ void Menu::exchangeCurrency(User& user)
                     std::cout << "You have " << accounts[fromAccount - 1].getBalance() << " " << fromCurrencyCode << " left in your account.\n";
                     std::cout << "The account you exchanged to now has " << accounts[toAccount - 1].getBalance() << " " << toCurrencyCode << "\n\n";
 
-                    std::cout << "Do you want to exchange more? [Y] or [N]: ";
+                    std::cout << "Do you want to exchange more? [Y] or [N]: \n";
                     char input = _getch();
 
                     if (int(input) == 89 || int(input) == 121)
@@ -201,7 +219,7 @@ void Menu::exchangeCurrency(User& user)
                     }
                     else
                     {
-                        std::cout << "Do you want to go back to the main menu? [Y] or [N]: ";
+                        std::cout << "Do you want to go back to the main menu? [Y] or [N]: \n";
                         char input = _getch();
 
                         if (int(input) == 89 || int(input) == 121)
@@ -243,9 +261,114 @@ void Menu::exchangeCurrency(User& user)
     std::getline(std::cin, accountName);
     convertedAmount = round(Currency::convertAmount(fromCurrencyCode, toCurrencyCode, amount) * 100) / 100;
     user.addAccount(Account(accountName, convertedAmount, Currency(toCurrencyCode)));
+
+    std::cout << "You have exchanged " << amount << " " << fromCurrencyCode << " to " << convertedAmount << " " << toCurrencyCode << "\n";
+    std::cout << "You have " << accounts[fromAccount - 1].getBalance() << " " << fromCurrencyCode << " left in your account.\n";
+    std::cout << "The account you exchanged to now has " << convertedAmount << " " << toCurrencyCode << "\n\n";
+
+    std::cout << "Do you want to exchange more? [Y] or [N]: \n";
+    char input = _getch();
+
+    if (int(input) == 89 || int(input) == 121)
+	{
+		exchangeCurrency(user);
+	}
+    else
+    {
+		std::cout << "Do you want to go back to the main menu? [Y] or [N]: \n";
+		char input = _getch();
+
+		if (int(input) == 89 || int(input) == 121)
+		{
+			mainMenu(user);
+		}
+        else
+        {
+			std::cout << "Program will terminate.\n";
+		}
+	}
+
+    returnToMain(user);
 }
 
+/**
+ * Transfers money from one account to another.
+ * 
+ * @param user The user performing the transfer.
+ * @param from The index of the account to transfer from.
+ * @param to The index of the account to transfer to.
+ */
+void Menu::transferMoney(User& user, int from, int to)
+{
+    std::vector<Account>& accounts = user.getAccounts();
 
+    if (accounts.size() == 1)
+    {
+        std::cout << "You don't have enough accounts to transfer.\n";
+        returnToMain(user);
+    }
+
+
+    if (from == to)
+    {
+        std::cout << "You cannot transfer to the same account.\n";
+        returnToMain(user);
+    }
+
+    double amount = 0.0;
+    std::cout << "How much do you want to transfer? ";
+    std::cin >> amount;
+
+    if (accounts[from].getCurrencyCode() == accounts[to].getCurrencyCode())
+    {
+        if (accounts[from].getBalance() >= amount)
+        {
+            accounts[from].setBalance(accounts[from].getBalance() - amount);
+            accounts[to].setBalance(accounts[to].getBalance() + amount);
+            std::cout << "You have transferred " << amount << " " << accounts[from].getCurrencyCode() << " from " << accounts[from].getAccountName() << " to " << accounts[to].getAccountName() << "\n";
+            std::cout << "You have " << accounts[from].getBalance() << " " << accounts[from].getCurrencyCode() << " left in your account.\n";
+            std::cout << "The account you transferred to now has " << accounts[to].getBalance() << " " << accounts[to].getCurrencyCode() << "\n\n";
+
+            std::cout << "Do you want to transfer more? [Y] or [N]: \n";
+            char input = _getch();
+
+            if (int(input) == 89 || int(input) == 121)
+            {
+                showAccounts(user);
+                std::cout << "Enter the account you want to transfer from: ";
+                std::cin >> from;
+                std::cout << "Enter the account you want to transfer to: ";
+                std::cin >> to;
+                transferMoney(user, from - 1, to - 1);
+            }
+            else
+            {
+                std::cout << "Do you want to go back to the main menu? [Y] or [N]: \n";
+                char input = _getch();
+
+                if (int(input) == 89 || int(input) == 121)
+                {
+                    mainMenu(user);
+                }
+                else
+                {
+                    std::cout << "Program will terminate.\n";
+                }
+            }
+        }
+        else
+        {
+            std::cout << "You don't have enough balance to transfer.\n";
+            returnToMain(user);
+        }
+    }
+    else
+    {
+        std::cout << "You cannot transfer between accounts with different currencies.\n";
+        std::cout << "Please use the exchange currency option.\n";
+        mainMenu(user);
+    }
+}
 
 /**
  * Displays the main menu for the authenticated user.
@@ -279,7 +402,16 @@ void Menu::mainMenu(User& user)
                 returnToMain(user);
                 break;
             case 2:
-        
+        		clearScreen();
+                showAccounts(user);
+                std::cout << "Enter the account you want to transfer from: ";
+                int from;
+                std::cin >> from;
+                std::cout << "Enter the account you want to transfer to: ";
+                int to;
+                std::cin >> to;
+                transferMoney(user, from - 1, to - 1);
+                isRunning = false;
                 break;
             case 3:
                 clearScreen();

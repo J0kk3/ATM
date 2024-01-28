@@ -19,7 +19,7 @@ public:
 	//Getters
 	std::string getUsername() const;
 	std::string getPin() const;
-	std::vector<Account> getAccounts() const;
+	std::vector<Account>& getAccounts();
 
 	//Setter with validation
 	// bool setPin(std::string newPin);

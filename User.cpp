@@ -26,7 +26,7 @@ std::string User::getPin() const
 {
 	return pin;
 }
-std::vector<Account> User::getAccounts() const
+std::vector<Account>& User::getAccounts()
 {
 	return accounts;
 }
