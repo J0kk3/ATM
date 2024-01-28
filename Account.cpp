@@ -16,7 +16,7 @@ Account::Account(std::string accountType, double balance, const Currency& curren
 /**
  * @brief Prints the account details.
  */
-void Account::printAccounts() const
+void Account::printAccounts()
 {
 	std::cout << "\t" << accountType << "\t\t" << balance << "\t\t" << currency.getCurrencyCode() << "\n";
 }
@@ -28,20 +28,20 @@ void Account::printAccounts() const
  * @param amount The amount of money to transfer.
  * @return True if the transfer was successful, false otherwise.
  */
-bool Account::transferMoney(Account* accountFrom, double amount)
+bool Account::transferMoney(Account& accountFrom, double amount)
 {
 
 	try
 	{
 		// Check if the accountFrom has sufficient balance and if the accountFrom and accountTo have the same currency before transferring
-		if ((accountFrom && accountFrom->getBalance() >= amount) &&
-			(accountFrom->getCurrencyCode() == currency.getCurrencyCode()))
+		if ((accountFrom.getBalance() >= amount) &&
+			(accountFrom.getCurrencyCode() == currency.getCurrencyCode()))
 		{
-			accountFrom->setBalance(accountFrom->getBalance() - amount);
+			accountFrom.setBalance(accountFrom.getBalance() - amount);
 			balance += amount;
 			return true;
 		}
-		else if (accountFrom && accountFrom->getCurrencyCode() != currency.getCurrencyCode())
+		else if (accountFrom.getCurrencyCode() != currency.getCurrencyCode())
 		{
 			std::cout << "Cannot transfer between accounts with different currencies\n";
 			return false;
@@ -69,6 +69,15 @@ bool Account::transferMoney(Account* accountFrom, double amount)
 double Account::getBalance() const
 {
 	return balance;
+}
+
+/**
+ * @brief Gets the account type of the account.
+ * @return The account type of the account.
+ */
+std::string Account::getAccountName() const
+{
+	return accountType;
 }
 
 /**

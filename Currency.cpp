@@ -3,6 +3,7 @@
 #include <random>
 #include <cctype>
 #include <algorithm>
+#include <iostream>
 
 /*
 * @brief Currency class
@@ -16,8 +17,6 @@
 //Parameterized constructor
 Currency::Currency(const std::string& currencyCode) : currencyCode(currencyCode) {};
 
-// Initialize the static array of currency codes
-std::string Currency::currencyCodes[5] = { "SEK", "DKK", "EUR", "GBP", "USD" };
 
 // Getter for the currency code
 std::string Currency::getCurrencyCode() const
@@ -27,8 +26,13 @@ std::string Currency::getCurrencyCode() const
 
 std::string Currency::getCurrencyCodes()
 {
+	// Initialize the static array of currency codes
+	std::string currencyCodes[5] = { "SEK", "DKK", "EUR", "GBP", "USD" };
+	
+	
+
 	std::string codes = "";
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < std::size(currencyCodes); i++)
 	{
 		codes += currencyCodes[i] + " ";
 	}
@@ -56,5 +60,6 @@ double Currency::getRate(const std::string& currencyCode)
 	if (upperCaseCode == "EUR") return EUR_RATE;
 	if (upperCaseCode == "GBP") return GBP_RATE;
 	if (upperCaseCode == "USD") return USD_RATE;
+	
 	throw std::runtime_error("Invalid currency code");
 }
