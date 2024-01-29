@@ -12,7 +12,6 @@ private:
 
 public:
 	Account(std::string accountType, double balance, const Currency& currency);
-
 	void printAccounts();
 	std::string getCurrencyCode() const;
 	double getBalance() const;
