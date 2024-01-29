@@ -13,7 +13,6 @@ private:
 
 public:
 	//Constructors
-	User();
 	User(std::string username, std::string pin);
 
 	//Getters
@@ -22,6 +21,5 @@ public:
 	std::vector<Account>& getAccounts();
 
 	//Setter with validation
-	// bool setPin(std::string newPin);
 	void addAccount(Account newAccount);
 };
